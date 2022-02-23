@@ -5,7 +5,7 @@ require "functions.php";
 
 if (isset($_GET["id"])){
     $id = $_GET["id"];
-    $task = getTaskById($id);
+    $task = getTask($id);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -14,9 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $time = $_POST["time"];
     $id = $_GET["id"];
     updateTask($task, $description, $time, $id);
+    header("location:index.php");
+    die();
 }
-
-$tasks = getTasks();
 
 ?>
 
@@ -29,13 +29,13 @@ $tasks = getTasks();
     <title>Update Task</title>
 </head>
 <body>
-    <form method="POST" action="updateTask.php?=<?= $id?>">
+    <form method="POST" action="updateTask.php?id=<?= $id?>">
         <label>Task name: </label>
-        <input autocomplete="off" value="<?= $tasks["task"] ?>" name="task" type="text"><br><br>
+        <input autocomplete="off" value="<?= $task["task"] ?>" name="task" type="text"><br><br>
         <label>Description:  </label>
-        <textarea autocomplete="off" value="<?= $tasks["description"] ?>" name="description"></textarea><br><br>
+        <textarea autocomplete="off" name="description"><?= $task["description"] ?></textarea><br><br>
         <label>Time: </label>
-        <input autocomplete="off" value="<?= $tasks["time"] ?>" name="time" type="time"><br><br>
+        <input autocomplete="off" value="<?= $task["time"] ?>" name="time" type="time"><br><br>
         <input value="Update task" type="submit">
     </form>
     <a href="index.php">Cancel</a>

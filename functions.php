@@ -18,7 +18,7 @@ function deleteTask($id) {
     $result->execute();
 }
 
-function updateUser($name, $description, $time, $id) {
+function updateTask($task, $description, $time, $id) {
     $conn = openDatabase();
     $query = "UPDATE taken SET task = :task, description = :description, time = :time  WHERE id = :id";
     $result = $conn->prepare($query);
@@ -29,7 +29,7 @@ function updateUser($name, $description, $time, $id) {
     $result->execute();
 }
 
-function getTaskById($id) {
+function getTask($id) {
     $conn = openDatabase();
     $query = "SELECT * FROM taken WHERE id = :id";
     $result = $conn->prepare($query);
