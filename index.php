@@ -31,23 +31,23 @@ $tasks = getTasks();
     <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-    <h1>Create Task</h1>
+    <h1>Taak maken</h1>
     <form method="POST" action="index.php">
-        <label>Task name: </label>
-        <input autocomplete="off" placeholder="Task name" name="task" type="text"><br><br>
-        <label>Description:  </label>
-        <textarea autocomplete="off" placeholder="Description" name="description"></textarea><br><br>
-        <label>Time: </label>
+        <label>Taak naam: </label><br>
+        <input autocomplete="off" placeholder="Taak naam" name="task" type="text"><br>
+        <label>Beschrijving:  </label><br>
+        <textarea autocomplete="off" placeholder="Beschrijving" name="description"></textarea><br>
+        <label>Voor wanneer wil je deze taak plannen? </label><br>
         <input autocomplete="off" name="time" type="time"><br><br>
-        <input value="Create task" class="btn btn-info" type="submit">
+        <input value="Taak maken" class="btn btn-info" type="submit">
     </form>
     <main>
         <h1>Huidige taken: </h1>
         <?php foreach ($tasks as $task) { ?>
             <div class="task-container bg-secondary">
-                <?= "<h3>" . $task["task"] . "</h3>"?>
-                <?= "<p>Description: " . $task["description"] . "</p>"?>
-                <?= "<p>Gepland voor: " . $task["time"] . "</p>"?>
+                <?= "<h3>" . $task["task"] . "</h3><br>"?>
+                <?= "<p>Beschrijving:<br> " . $task["description"] . "</p>"?>
+                <?= "<p>Gepland voor: " . $task["time"] . "</p><br>"?>
                 <a class="yellow" href="updateTask.php?id=<?= $task["id"]?>"><i class="fas fa-edit"></i></a>
                 <a class="red" href="index.php?delete=<?= $task["id"]?>"><i class="fas fa-times"></i></a>
             </div>
