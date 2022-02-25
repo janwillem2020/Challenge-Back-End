@@ -26,21 +26,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To do list - Update taak</title>
+    <title>To do list - Update lijst</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/cdec2dabe7.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-    <form method="POST" action="updateTask.php?id=<?= $id?>">
-        <label>Task name: </label>
-        <input autocomplete="off" value="<?= $task["task"] ?>" name="task" type="text"><br><br>
-        <label>Description:  </label>
-        <textarea autocomplete="off" name="description"><?= $task["description"] ?></textarea><br><br>
-        <label>Time: </label>
-        <input autocomplete="off" value="<?= $task["time"] ?>" name="time" type="time"><br><br>
-        <input value="Update taak" class="btn btn-info" type="submit">
+    <form method="POST" action="updateList.php?id=<?= $id?>">
+        <label>Lijst naam: </label>
+        <input autocomplete="off" value="<?= $list["list"] ?>" name="list" type="text"><br><br>
+        <input value="Update lijst" class="btn btn-info" type="submit">
     </form>
-    <a href="index.php">Terug</a>
+    <a href="index.php">Cancel</a>
 </body>
 </html>

@@ -9,6 +9,10 @@
     color: white;
 }
 
+.list-container {
+    display: inline-block;
+}
+
 .modal-container {
     position: absolute;
     width: 500px;

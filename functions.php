@@ -46,4 +46,20 @@ function getTasks() {
     return $result->fetchall();
 }
 
+function createList($list) {
+    $conn = openDatabase();
+    $query = "INSERT INTO lijsten (list) VALUES (:list)";
+    $result = $conn->prepare($query);
+    $result->bindParam(":list", $list);
+    $result->execute();
+}
+
+function getLists() {
+    $conn = openDatabase();
+    $query = "SELECT * FROM lijsten";
+    $result = $conn->prepare($query);
+    $result->execute();
+    return $result->fetchall();
+}
+
 ?>
