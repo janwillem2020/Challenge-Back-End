@@ -5,15 +5,13 @@ require "functions.php";
 
 if (isset($_GET["id"])){
     $id = $_GET["id"];
-    $task = getTask($id);
+    $list = getList($id);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $task = $_POST["task"];
-    $description = $_POST["description"];
-    $time = $_POST["time"];
+    $list = $_POST["list"];
     $id = $_GET["id"];
-    updateTask($task, $description, $time, $id);
+    updateList($list, $id);
     header("location:index.php");
     die();
 }

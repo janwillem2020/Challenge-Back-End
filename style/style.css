@@ -15,8 +15,8 @@
 
 .modal-container {
     position: absolute;
-    width: 500px;
-    height: 250px;
+    width: 300px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;

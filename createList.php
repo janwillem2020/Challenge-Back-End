@@ -43,6 +43,7 @@ $lists = getLists();
                 <?= "<h3>" . $list["list"] . "</h3><br>"?>
                 <a class="yellow" href="updateList.php?id=<?= $list["id"]?>"><i class="fas fa-edit"></i></a>
                 <a class="red" href="index.php?delete=confirm&id="><i class="fas fa-times"></i></a>
+                <a href="createTask.php?id=<?= $list["id"]?>"><i class="fas fa-plus"></i></a>
             </div>
         <?php } ?>
     </main>

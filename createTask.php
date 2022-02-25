@@ -20,14 +20,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $task = $_POST["task"];
     $description = $_POST["description"];
     $time = $_POST["time"];
-
+    $idList = $_GET["id"];
     if (empty($task) || empty($time)) {
         echo "Sommige velden zijn niet ingevuld";
     } else {
         if (empty($description)) {
             $description = "Geen beschrijving";
         }
-        createTask($task, $description, $time);
+        createTask($task, $description, $time, $idList);
     }
 }
 
@@ -49,7 +49,7 @@ $tasks = getTasks();
 <body>
     <a href="index.php">Home</a>
     <h1>Taak maken</h1>
-    <form method="POST" action="createTask.php">
+    <form method="POST" action="createTask.php?id=<?= $_GET["id"]?>">
         <label>Taak naam: </label><br>
         <input autocomplete="off" placeholder="Taak naam" name="task" type="text"><span style="color: red;"> *</span><br>
         <label>Beschrijving:  </label><br>
@@ -70,11 +70,5 @@ $tasks = getTasks();
             </div>
         <?php } ?>
     </main>
-    <?php if ($deletePage == true) {?>
-    <div class="modal-container">
-        <p>Weet je zeker dat je deze taak wil verwijderen?</p>
-        <a href="index.php?delete=<?= $task["id"]?>">ja</a><a href="index.php">nee</a>
-    </div>
-    <?php } ?>
 </body>
 </html>
