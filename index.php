@@ -3,17 +3,35 @@
 require "connection.php";
 require "functions.php";
 
+$deletePage = false;
+
 if (isset($_GET["delete"])){
-    $id = $_GET["delete"];
-    deleteTask($id);
+    if ($_GET["delete"] == "confirm") {
+        $deletePage = true;
+    } else {
+        $id = $_GET["delete"];
+        deleteTask($id);
+        header("location:index.php");
+        die();
+    }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $task = $_POST["task"];
     $description = $_POST["description"];
     $time = $_POST["time"];
-    createTask($task, $description, $time);
+
+    if (empty($task) || empty($time)) {
+        echo "Sommige velden zijn niet ingevuld";
+    } else {
+        if (empty($description)) {
+            $description = "Geen beschrijving";
+        }
+        createTask($task, $description, $time);
+    }
 }
+
+
 
 $tasks = getTasks();
 
@@ -34,11 +52,11 @@ $tasks = getTasks();
     <h1>Taak maken</h1>
     <form method="POST" action="index.php">
         <label>Taak naam: </label><br>
-        <input autocomplete="off" placeholder="Taak naam" name="task" type="text"><br>
+        <input autocomplete="off" placeholder="Taak naam" name="task" type="text"><span style="color: red;"> *</span><br>
         <label>Beschrijving:  </label><br>
         <textarea autocomplete="off" placeholder="Beschrijving" name="description"></textarea><br>
         <label>Voor wanneer wil je deze taak plannen? </label><br>
-        <input autocomplete="off" name="time" type="time"><br><br>
+        <input autocomplete="off" name="time" type="time"><span style="color: red;"> *</span><br><br>
         <input value="Taak maken" class="btn btn-info" type="submit">
     </form>
     <main>
@@ -49,9 +67,16 @@ $tasks = getTasks();
                 <?= "<p>Beschrijving:<br> " . $task["description"] . "</p>"?>
                 <?= "<p>Gepland voor: " . $task["time"] . "</p><br>"?>
                 <a class="yellow" href="updateTask.php?id=<?= $task["id"]?>"><i class="fas fa-edit"></i></a>
-                <a class="red" href="index.php?delete=<?= $task["id"]?>"><i class="fas fa-times"></i></a>
+                <a class="red" href="index.php?delete=confirm&id="><i class="fas fa-times"></i></a>
             </div>
         <?php } ?>
     </main>
+    <?php if ($deletePage == true) {?>
+    <div class="modal-container">
+        <p>Weet je zeker dat je deze taak wil verwijderen?</p>
+        <a href="index.php?delete=<?= $task["id"]?>">ja</a><a href="index.php">nee</a>
+    </div>
+
+    <?php } ?>
 </body>
 </html>

@@ -8,3 +8,12 @@
     font-size: 24px;
     color: white;
 }
+
+.modal-container {
+    position: absolute;
+    width: 500px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
