@@ -1,7 +1,9 @@
 <?php 
 
-require "connection.php";
-require "functions.php";
+require "require/connection.php";
+require "require/functions.php";
+
+$error = "";
 
 if (isset($_GET["id"])){
     $id = $_GET["id"];
@@ -11,30 +13,31 @@ if (isset($_GET["id"])){
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $list = $_POST["list"];
     $id = $_GET["id"];
-    updateList($list, $id);
-    header("location:index.php");
-    die();
+
+    if (empty($list)) {
+        $error = "<p class='error'>Sommige velden zijn niet ingevuld</p>";
+    } else {
+        $error = "";
+        updateList($list, $id);
+        header("location:index.php");
+        die();
+    }
 }
+
+$currentPage ="Lijst updaten";
+
+include "header/haeder.php";
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To do list - Update lijst</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/cdec2dabe7.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="style/style.css">
-</head>
 <body>
+    <h1>Update lijst</h1>
+    <?= $error ?>
     <form method="POST" action="updateList.php?id=<?= $id?>">
         <label>Lijst naam: </label>
-        <input autocomplete="off" value="<?= $list["list"] ?>" name="list" type="text"><br><br>
+        <input autocomplete="off" maxlength="20" value="<?= $list["list"] ?>" name="list" type="text"><br><br>
         <input value="Update lijst" class="btn btn-info" type="submit">
     </form>
-    <a href="index.php">Cancel</a>
+    <a href="index.php">Annuleren</a>
 </body>
 </html>

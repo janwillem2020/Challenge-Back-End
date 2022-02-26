@@ -1,4 +1,6 @@
-<?php 
+<?php
+
+// Task functies
 
 function createTask($task, $description, $time, $idList) {
     $conn = openDatabase();
@@ -10,6 +12,43 @@ function createTask($task, $description, $time, $idList) {
     $result->bindParam(":idList", $idList);
     $result->execute();
 }
+
+function getTask($id) {
+    $conn = openDatabase();
+    $query = "SELECT * FROM taken WHERE id = :id";
+    $result = $conn->prepare($query);
+    $result->bindParam(":id", $id);
+    $result->execute();
+    return $result->fetch();
+}
+
+function getTasks() {
+    $conn = openDatabase();
+    $query = "SELECT * FROM taken";
+    $result = $conn->prepare($query);
+    $result->execute();
+    return $result->fetchall();
+}
+
+function getTaskByListId($idList) {
+    $conn = openDatabase();
+    $query = "SELECT * FROM taken WHERE idList = :idList";
+    $result = $conn->prepare($query);
+    $result->bindParam(":idList", $idList);
+    $result->execute();
+    return $result->fetchall();
+}
+
+function getTaskByStatus($id) {
+    $conn = openDatabase();
+    $query = "SELECT * FROM taken WHERE  = :id";
+    $result = $conn->prepare($query);
+    $result->bindParam(":id", $id);
+    $result->execute();
+    return $result->fetch();
+}
+
+// List functies
 
 function deleteTask($id) {
     $conn = openDatabase();
@@ -30,31 +69,11 @@ function updateTask($task, $description, $time, $id) {
     $result->execute();
 }
 
-function getTask($id) {
-    $conn = openDatabase();
-    $query = "SELECT * FROM taken WHERE id = :id";
-    $result = $conn->prepare($query);
-    $result->bindParam(":id", $id);
-    $result->execute();
-    return $result->fetch();
-}
 
-function getTaskByListId($idList) {
-    $conn = openDatabase();
-    $query = "SELECT * FROM taken WHERE idList = :idList";
-    $result = $conn->prepare($query);
-    $result->bindParam(":idList", $idList);
-    $result->execute();
-    return $result->fetchall();
-}
 
-function getTasks() {
-    $conn = openDatabase();
-    $query = "SELECT * FROM taken";
-    $result = $conn->prepare($query);
-    $result->execute();
-    return $result->fetchall();
-}
+
+
+
 
 function createList($list) {
     $conn = openDatabase();

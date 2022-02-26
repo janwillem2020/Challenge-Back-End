@@ -1,7 +1,9 @@
 <?php 
 
-require "connection.php";
-require "functions.php";
+require "require/connection.php";
+require "require/functions.php";
+
+$error = "";
 
 if (isset($_GET["id"])){
     $id = $_GET["id"];
@@ -13,34 +15,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $description = $_POST["description"];
     $time = $_POST["time"];
     $id = $_GET["id"];
-    updateTask($task, $description, $time, $id);
-    header("location:index.php");
-    die();
+
+    if (empty($task) || empty($time)) {
+        $error = "<p class='error'>Sommige velden zijn niet ingevuld</p>";
+    } else {
+        if (empty($description)) {
+            $description = "Geen beschrijving";
+        }
+        $error = "";
+        updateTask($task, $description, $time, $id);
+        header("location:index.php");
+        die();  
+    }
 }
+
+$currentPage = "Taak updaten";
+
+include "header/header.php";
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To do list - Update taak</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/cdec2dabe7.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="style/style.css">
-</head>
 <body>
+    <h1>Update taak</h1>
+    <?= $error ?>
     <form method="POST" action="updateTask.php?id=<?= $id?>">
-        <label>Task name: </label>
-        <input autocomplete="off" value="<?= $task["task"] ?>" name="task" type="text"><br><br>
-        <label>Description:  </label>
+        <label>Taak naam: </label>
+        <input autocomplete="off" maxlength="20" value="<?= $task["task"] ?>" name="task" type="text"><br><br>
+        <label>Beschrijving:  </label>
         <textarea autocomplete="off" name="description"><?= $task["description"] ?></textarea><br><br>
-        <label>Time: </label>
+        <label>Gepland voor: </label>
         <input autocomplete="off" value="<?= $task["time"] ?>" name="time" type="time"><br><br>
         <input value="Update taak" class="btn btn-info" type="submit">
     </form>
-    <a href="index.php">Terug</a>
+    <a href="index.php">Annuleren</a>
 </body>
 </html>
