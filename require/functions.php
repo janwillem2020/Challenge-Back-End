@@ -48,16 +48,6 @@ function getTaskByStatus($id) {
     return $result->fetch();
 }
 
-// List functies
-
-function deleteTask($id) {
-    $conn = openDatabase();
-    $query = "DELETE FROM taken WHERE id = :id";
-    $result = $conn->prepare($query);
-    $result->bindParam(":id", $id);
-    $result->execute();
-}
-
 function updateTask($task, $description, $time, $id) {
     $conn = openDatabase();
     $query = "UPDATE taken SET task = :task, description = :description, time = :time  WHERE id = :id";
@@ -69,11 +59,15 @@ function updateTask($task, $description, $time, $id) {
     $result->execute();
 }
 
+function deleteTask($id) {
+    $conn = openDatabase();
+    $query = "DELETE FROM taken WHERE id = :id";
+    $result = $conn->prepare($query);
+    $result->bindParam(":id", $id);
+    $result->execute();
+}
 
-
-
-
-
+// List functies
 
 function createList($list) {
     $conn = openDatabase();
@@ -83,20 +77,21 @@ function createList($list) {
     $result->execute();
 }
 
+function getList($id) {
+    $conn = openDatabase();
+    $query = "SELECT * FROM lijsten WHERE id = :id";
+    $result = $conn->prepare($query);
+    $result->bindParam(":id", $id);
+    $result->execute();
+    return $result->fetch();
+}
+
 function getLists() {
     $conn = openDatabase();
     $query = "SELECT * FROM lijsten";
     $result = $conn->prepare($query);
     $result->execute();
     return $result->fetchall();
-}
-
-function deleteList($id) {
-    $conn = openDatabase();
-    $query = "DELETE FROM lijsten WHERE id = :id";
-    $result = $conn->prepare($query);
-    $result->bindParam(":id", $id);
-    $result->execute();
 }
 
 function updateList($list, $id) {
@@ -108,13 +103,12 @@ function updateList($list, $id) {
     $result->execute();
 }
 
-function getList($id) {
+function deleteList($id) {
     $conn = openDatabase();
-    $query = "SELECT * FROM lijsten WHERE id = :id";
+    $query = "DELETE FROM lijsten WHERE id = :id";
     $result = $conn->prepare($query);
     $result->bindParam(":id", $id);
     $result->execute();
-    return $result->fetch();
 }
 
 ?>
