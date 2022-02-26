@@ -10,6 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Sommige velden zijn niet ingevuld";
     } else {
         createList($list);
+        header("location:index.php");
+        die();
     }
 }
 
@@ -32,20 +34,9 @@ $lists = getLists();
     <a href="index.php">Home</a>
     <h1>Lijst maken</h1>
     <form method="POST" action="createList.php">
-        <label>Lijst naam: </label><br><br>
-        <input autocomplete="off" placeholder="Lijst naam" name="list" type="text"><span style="color: red;"> *</span><br><br>
+        <label>Lijst naam: </label><br>
+        <input autocomplete="off" placeholder="Lijst naam" name="list" type="text"><span style="color: red;"> *</span><br>
         <input value="Lijst maken" class="btn btn-info" type="submit">
     </form>
-    <main>
-        <h1>Huidige lijsten:</h1>
-        <?php foreach ($lists as $list) { ?>
-            <div class="list-container bg-secondary">
-                <?= "<h3>" . $list["list"] . "</h3><br>"?>
-                <a class="yellow" href="updateList.php?id=<?= $list["id"]?>"><i class="fas fa-edit"></i></a>
-                <a class="red" href="index.php?delete=confirm&id="><i class="fas fa-times"></i></a>
-                <a href="createTask.php?id=<?= $list["id"]?>"><i class="fas fa-plus"></i></a>
-            </div>
-        <?php } ?>
-    </main>
 </body>
 </html>

@@ -4,6 +4,7 @@ require "connection.php";
 require "functions.php";
 
 $deletePage = false;
+$error = "";
 
 if (isset($_GET["delete"])){
     if ($_GET["delete"] == "confirm") {
@@ -22,12 +23,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $time = $_POST["time"];
     $idList = $_GET["id"];
     if (empty($task) || empty($time)) {
-        echo "Sommige velden zijn niet ingevuld";
+        $error = "<p>Sommige velden zijn niet ingevuld</p>";
     } else {
         if (empty($description)) {
             $description = "Geen beschrijving";
         }
+        $error = "";
         createTask($task, $description, $time, $idList);
+        header("location:index.php");
+        die();
     }
 }
 
@@ -48,27 +52,16 @@ $tasks = getTasks();
 </head>
 <body>
     <a href="index.php">Home</a>
+    <?= $error ?>
     <h1>Taak maken</h1>
     <form method="POST" action="createTask.php?id=<?= $_GET["id"]?>">
         <label>Taak naam: </label><br>
-        <input autocomplete="off" placeholder="Taak naam" name="task" type="text"><span style="color: red;"> *</span><br>
+        <input autocomplete="off" maxlength="20" placeholder="Taak naam" name="task" type="text"><span style="color: red;"> *</span><br>
         <label>Beschrijving:  </label><br>
         <textarea autocomplete="off" placeholder="Beschrijving" name="description"></textarea><br>
         <label>Voor wanneer wil je deze taak plannen? </label><br>
         <input autocomplete="off" name="time" type="time"><span style="color: red;"> *</span><br><br>
         <input value="Taak maken" class="btn btn-info" type="submit">
     </form>
-    <main>
-        <h1>Huidige taken:</h1>
-        <?php foreach ($tasks as $task) { ?>
-            <div class="task-container bg-secondary">
-                <?= "<h3>" . $task["task"] . "</h3><br>"?>
-                <?= "<p>Beschrijving:<br> " . $task["description"] . "</p>"?>
-                <?= "<p>Gepland voor: " . $task["time"] . "</p><br>"?>
-                <a class="yellow" href="updateTask.php?id=<?= $task["id"]?>"><i class="fas fa-edit"></i></a>
-                <a class="red" href="index.php?delete=confirm&id="><i class="fas fa-times"></i></a>
-            </div>
-        <?php } ?>
-    </main>
 </body>
 </html>

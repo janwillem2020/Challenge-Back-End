@@ -5,14 +5,26 @@ require "functions.php";
 
 $lists = getLists();
 
-$deletePage = false;
+$deleteTask = false;
+$deleteList = false;
 
 if (isset($_GET["deleteTask"])){
     if ($_GET["deleteTask"] == "confirm") {
-        $deletePage = true;
+        $deleteTask = true;
     } else {
         $id = $_GET["deleteTask"];
         deleteTask($id);
+        header("location:index.php");
+        die();
+    }
+}
+
+if (isset($_GET["deleteList"])){
+    if ($_GET["deleteList"] == "confirm") {
+        $deleteList = true;
+    } else {
+        $id = $_GET["deleteList"];
+        deleteList($id);
         header("location:index.php");
         die();
     }
@@ -43,37 +55,43 @@ if (isset($_GET["deleteList"])){
     <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-    <a href="createList.php">Lijst maken</a>
+    <a href="createList.php"><i class="fas fa-plus"></i>Nieuwe lijst</a>
     <main>
-        <h1>Huidige lijst met taken</h1>
+        <h1>Huidige lijsten</h1>
 
         <?php foreach ($lists as $list) { $tasks = getTaskByListId($list["id"]); ?>
-            <div class="list-container bg-secondary">
-                <?= "<h3>" . $list["list"] . "</h3>"?>
-                <a class="yellow" href="updateList.php?id=<?= $list["id"]?>"><i class="fas fa-edit"></i></a>
-                <a class="red" href="index.php?deleteList=confirm&id="><i class="fas fa-times"></i></a>
-                <a href="createTask.php?id=<?= $list["id"]?>"><i class="fas fa-plus"></i></a>
-                <?php foreach ($tasks as $task) { ?>
-                    <ul class="task-container bg-secondary">
-                        <?= "<li>" . $task["task"] . "</li>"?>
-                        <?= "<li>Beschrijving:<br> " . $task["description"] . "</li>"?>
-                        <?= "<li>Gepland voor: " . $task["time"] . "</li>"?>
-                    </ul>
-                    <a class="yellow" href="updateTask.php?id=<?= $task["id"]?>"><i class="fas fa-edit"></i></a>
-                    <a class="red" href="index.php?deleteTask=confirm&id="><i class="fas fa-times"></i></a>
-                <?php } ?>
+            <div class="list-container">
+                <div class="list-container-bar">
+                    <?= "<p>" . $list["list"] . "</p>"?>
+                    <div class="bar-items">
+                        <a href="createTask.php?id=<?= $list["id"]?>"><i class="fas fa-plus"></i></a>
+                        <a href="updateList.php?id=<?= $list["id"]?>"><i class="fas fa-edit"></i></a>
+                        <a href="index.php?deleteList=confirm&id="><i class="fas fa-times"></i></a>
+                    </div>
+                </div>
+                <div class="list-container-content">
+                    <?php foreach ($tasks as $task) { ?>
+                        <ul class="task-container">
+                            <?= "<li>" . $task["task"] . "&nbsp" . $task["time"] . "</li>"?>
+                            <!-- <?= "<li>Beschrijving:<br> " . $task["description"] . "</li>"?>
+                            <?= "<li>Gepland voor: " . "</li>"?> -->
+                        </ul>
+                        <a class="yellow" href="updateTask.php?id=<?= $task["id"]?>"><i class="fas fa-edit"></i></a>
+                        <a class="red" href="index.php?deleteTask=confirm&id="><i class="fas fa-times"></i></a>
+                    <?php } ?>
+                </div>
             </div>
         <?php } ?>
     </main>
-    <?php if ($deletePage == true) {?>
+    <?php if ($deleteTask == true) {?>
     <div class="modal-container">
-        <p>Weet je zeker dat je deze taak wil verwijderen?</p>
+        <p>Weet je zeker dat je taak wil verwijderen?</p>
         <a href="index.php?deleteTask=<?= $task["id"]?>">ja</a><a href="index.php">nee</a>
     </div>
     <?php } ?>
-    <?php if ($deletePage == true) {?>
+    <?php if ($deleteList == true) {?>
     <div class="modal-container">
-        <p>Weet je zeker dat je deze taak wil verwijderen?</p>
+        <p>Weet je zeker dat je lijst wil verwijderen?</p>
         <a href="index.php?deleteList=<?= $list["id"]?>">ja</a><a href="index.php">nee</a>
     </div>
     <?php } ?>
