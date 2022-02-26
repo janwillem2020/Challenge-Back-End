@@ -4,7 +4,7 @@
 
 function createTask($task, $description, $time, $idList) {
     $conn = openDatabase();
-    $query = "INSERT INTO taken (`task`, `description`, `time` , `idList`) VALUES (:task, :description, :time, :idList)";
+    $query = "INSERT INTO taken (task, description, time , idList) VALUES (:task, :description, :time, :idList)";
     $result = $conn->prepare($query);
     $result->bindParam(":task", $task);
     $result->bindParam(":description", $description);
@@ -55,6 +55,15 @@ function updateTask($task, $description, $time, $id) {
     $result->bindParam(":task", $task);
     $result->bindParam(":description", $description);
     $result->bindParam(":time", $time);
+    $result->bindParam(":id", $id);
+    $result->execute();
+}
+
+function updateTaskStatus($status, $id) {
+    $conn = openDatabase();
+    $query = "UPDATE taken SET status = :status WHERE id = :id";
+    $result = $conn->prepare($query);
+    $result->bindParam(":status", $status);
     $result->bindParam(":id", $id);
     $result->execute();
 }

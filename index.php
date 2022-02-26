@@ -8,6 +8,16 @@ $deleteList = false;
 
 $lists = getLists();
 
+if (isset($_GET["changeStatus"])) {
+    if ($_GET["changeStatus"] == "true") {
+        $id = $_GET["id"];
+        $status = "done";
+        updateTaskStatus($status, $id);
+        header("location:index.php");
+        die();
+    }
+}
+   
 if (isset($_GET["deleteTask"])){
     if ($_GET["deleteTask"] == "confirm") {
         $deleteTask = true;
@@ -55,11 +65,10 @@ include "header/header.php";
                     <?php foreach ($tasks as $task) { ?>
                         <ul class="task-container">
                             <?= "<li>" . $task["task"] . "&nbsp" . $task["time"] . "</li>"?>
-                            <!-- <?= "<li>Beschrijving:<br> " . $task["description"] . "</li>"?>
-                            <?= "<li>Gepland voor: " . "</li>"?> -->
                         </ul>
-                        <a class="yellow" href="updateTask.php?id=<?= $task["id"]?>"><i class="fas fa-edit"></i></a>
-                        <a class="red" href="index.php?deleteTask=confirm&id="><i class="fas fa-times"></i></a>
+                        <a href="index.php?changeStatus=true&id=<?= $task["id"]?>"><i class="fas fa-check"></i></i></a>
+                        <a href="updateTask.php?id=<?= $task["id"]?>"><i class="fas fa-edit"></i></a>
+                        <a href="index.php?deleteTask=confirm&id="><i class="fas fa-times"></i></a>
                     <?php } ?>
                 </div>
             </div>
