@@ -39,14 +39,14 @@ function getTaskByListId($idList) {
     return $result->fetchall();
 }
 
-function getTaskByStatus($id) {
-    $conn = openDatabase();
-    $query = "SELECT * FROM taken WHERE  = :id";
-    $result = $conn->prepare($query);
-    $result->bindParam(":id", $id);
-    $result->execute();
-    return $result->fetch();
-}
+// function getTaskByStatus($id) {
+//     $conn = openDatabase();
+//     $query = "SELECT * FROM taken WHERE  = :id";
+//     $result = $conn->prepare($query);
+//     $result->bindParam(":id", $id);
+//     $result->execute();
+//     return $result->fetch();
+// }
 
 function updateTask($task, $description, $time, $id) {
     $conn = openDatabase();
@@ -96,9 +96,9 @@ function getLists() {
 
 function updateList($list, $id) {
     $conn = openDatabase();
-    $query = "UPDATE lijsten SET lijst = :lijst WHERE id = :id";
+    $query = "UPDATE lijsten SET list = :list WHERE id = :id";
     $result = $conn->prepare($query);
-    $result->bindParam(":task", $task);
+    $result->bindParam(":list", $list);
     $result->bindParam(":id", $id);
     $result->execute();
 }

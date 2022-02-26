@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $currentPage ="Lijst updaten";
 
-include "header/haeder.php";
+include "header/header.php";
 
 ?>
 
