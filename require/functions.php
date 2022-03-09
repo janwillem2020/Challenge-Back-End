@@ -30,23 +30,18 @@ function getTasks() {
     return $result->fetchall();
 }
 
-function getTaskByListId($idList) {
+function getTaskByListId($idList, $sorting) {
     $conn = openDatabase();
-    $query = "SELECT * FROM taken WHERE idList = :idList";
+    if ($sorting == "asc") {
+        $query = "SELECT * FROM taken WHERE idList = :idList ORDER BY time ASC";
+    } else if ($sorting == "desc") {
+        $query = "SELECT * FROM taken WHERE idList = :idList ORDER BY time DESC";
+    }
     $result = $conn->prepare($query);
     $result->bindParam(":idList", $idList);
     $result->execute();
     return $result->fetchall();
 }
-
-// function getTaskByStatus($id) {
-//     $conn = openDatabase();
-//     $query = "SELECT * FROM taken WHERE  = :id";
-//     $result = $conn->prepare($query);
-//     $result->bindParam(":id", $id);
-//     $result->execute();
-//     return $result->fetch();
-// }
 
 function updateTask($task, $description, $time, $id) {
     $conn = openDatabase();

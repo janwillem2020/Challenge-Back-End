@@ -6,7 +6,13 @@ require "require/functions.php";
 $deleteTask = false;
 $deleteList = false;
 
+$sorting = "asc";
+
 $lists = getLists();
+
+if (isset($_GET["sort"])) {
+    $sorting = $_GET["sort"];
+}
 
 if (isset($_GET["changeStatus"])) {
     if ($_GET["changeStatus"] == "true") {
@@ -47,14 +53,22 @@ include "header/header.php";
 ?>
 
 <body>
-    <a href="createList.php"><i class="fas fa-plus"></i>Nieuwe lijst</a>
+    <a class="btn btn-info m-1" href="createList.php"><i class="fas fa-plus"></i>&nbspNieuwe lijst</a>
     <main>
         <h1>Huidige lijsten</h1>
 
-        <?php foreach ($lists as $list) { $tasks = getTaskByListId($list["id"]); ?>
+        <?php foreach ($lists as $list) { $tasks = getTaskByListId($list["id"], $sorting); ?>
             <div class="list-container">
                 <div class="list-container-bar">
                     <?= "<p>" . $list["list"] . "</p>"?>
+                    <form method="GET" action="index.php">
+                        <label for="sort">Sorteren op: </label>
+                        <select name="sort" id="sort">
+                            <option value="asc">Tijd Asc</option>
+                            <option value="desc">Tijd Desc</option>
+                        </select>
+                        <input value="Sort" type="submit">
+                    </form>
                     <div class="bar-items">
                         <a href="createTask.php?id=<?= $list["id"]?>"><i class="fas fa-plus"></i></a>
                         <a href="updateList.php?id=<?= $list["id"]?>"><i class="fas fa-edit"></i></a>
@@ -64,11 +78,11 @@ include "header/header.php";
                 <div class="list-container-content">
                     <?php foreach ($tasks as $task) { ?>
                         <ul class="task-container">
-                            <?= "<li>" . $task["task"] . "&nbsp" . $task["time"] . "</li>"?>
+                            <?= "<li class=" . $task["status"] . ">" . $task["task"] . "&nbsp" . $task["time"] . "</li>"?>
                         </ul>
-                        <a href="index.php?changeStatus=true&id=<?= $task["id"]?>"><i class="fas fa-check"></i></i></a>
+                        <a href="index.php?changeStatus=true&id=<?= $task["id"]?>"><i class="fas fa-check"></i></a>
                         <a href="updateTask.php?id=<?= $task["id"]?>"><i class="fas fa-edit"></i></a>
-                        <a href="index.php?deleteTask=confirm&id="><i class="fas fa-times"></i></a>
+                        <a href="index.php?deleteTask=confirm"><i class="fas fa-times"></i></a>
                     <?php } ?>
                 </div>
             </div>
