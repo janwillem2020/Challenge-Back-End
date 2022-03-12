@@ -30,13 +30,28 @@ function getTasks() {
     return $result->fetchall();
 }
 
-function getTaskByListId($idList, $sorting) {
+function getTaskByListId($idList, $sorting, $filter) {
     $conn = openDatabase();
-    if ($sorting == "asc") {
-        $query = "SELECT * FROM taken WHERE idList = :idList ORDER BY time ASC";
-    } else if ($sorting == "desc") {
-        $query = "SELECT * FROM taken WHERE idList = :idList ORDER BY time DESC";
+    if ($filter == "done") {
+        if ($sorting == "asc") {
+            $query = "SELECT * FROM taken WHERE idList = :idList AND status = 'done' ORDER BY time ASC";
+        } else if ($sorting == "desc") {
+            $query = "SELECT * FROM taken WHERE idList = :idList AND status = 'done' ORDER BY time DESC";
+        }
+    } else if ($filter == "pending") {
+        if ($sorting == "asc") {
+            $query = "SELECT * FROM taken WHERE idList = :idList AND status = 'pending' ORDER BY time ASC";
+        } else if ($sorting == "desc") {
+            $query = "SELECT * FROM taken WHERE idList = :idList AND status = 'pending' ORDER BY time DESC";
+        }
+    } else {
+        if ($sorting == "asc") {
+            $query = "SELECT * FROM taken WHERE idList = :idList ORDER BY time ASC";
+        } else if ($sorting == "desc") {
+            $query = "SELECT * FROM taken WHERE idList = :idList ORDER BY time DESC";
+        }
     }
+        
     $result = $conn->prepare($query);
     $result->bindParam(":idList", $idList);
     $result->execute();
